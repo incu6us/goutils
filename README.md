@@ -5,7 +5,7 @@
 Utils for day-to-day work
 
 ## Assert library
-* assert.Equals - lib to compare two structs(or its pointer) with skipping a list of fields for exclusion from comparing.
+* assert.Equals - lib to compare two structs(or its pointers, or generic types) with skipping a list of fields for exclusion from comparing.
 (supports only first level fields)
 Example:
 ```go
