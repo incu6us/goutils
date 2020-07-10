@@ -4,26 +4,26 @@ import (
 	"reflect"
 )
 
-func Equals(actual, expected interface{}, skippedFields ...string) bool {
-	if isPrimitiveType(actual) {
-		return reflect.DeepEqual(actual, expected)
+func Equals(expected, actual interface{}, skippedFields ...string) bool {
+	if isPrimitiveType(expected) || isPrimitiveType(actual) {
+		return reflect.DeepEqual(expected, actual)
 	}
 
 	actualStruct := parseStruct(actual, skippedFields)
 	expectedStruct := parseStruct(expected, skippedFields)
 
-	return reflect.DeepEqual(actualStruct, expectedStruct)
+	return reflect.DeepEqual(expectedStruct, actualStruct)
 }
 
-func EqualsWithDiffFunc(actual, expected interface{}, skippedFields []string, diffFn func(actual, expected interface{}) bool) bool {
-	if isPrimitiveType(actual) {
-		return diffFn(actual, expected)
+func EqualsWithDiffFunc(expected, actual interface{}, skippedFields []string, diffFn func(expected, actual interface{}) bool) bool {
+	if isPrimitiveType(expected) || isPrimitiveType(actual) {
+		return diffFn(expected, actual)
 	}
 
 	actualStruct := parseStruct(actual, skippedFields)
 	expectedStruct := parseStruct(expected, skippedFields)
 
-	return diffFn(actualStruct, expectedStruct)
+	return diffFn(expectedStruct, actualStruct)
 }
 
 func isPrimitiveType(t interface{}) bool {

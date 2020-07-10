@@ -115,7 +115,7 @@ func TestEqual(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Equals(tt.args.actual, tt.args.expected, tt.args.skippedFields...); got != tt.want {
+			if got := Equals(tt.args.expected, tt.args.actual, tt.args.skippedFields...); got != tt.want {
 				t.Errorf("Equals() = %v, want %v", got, tt.want)
 			}
 		})
@@ -138,7 +138,7 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 		actual        interface{}
 		expected      interface{}
 		skippedFields []string
-		diffFn        func(actual, expected interface{}) bool
+		diffFn        func(expected, actual interface{}) bool
 	}
 	tests := []struct {
 		name string
@@ -161,8 +161,8 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 					InnerStruct: innerStruct{Value: "123"},
 				},
 				skippedFields: []string{"CreatedAt"},
-				diffFn: func(actual, expected interface{}) bool {
-					return reflect.DeepEqual(actual, expected)
+				diffFn: func(expected, actual interface{}) bool {
+					return reflect.DeepEqual(expected, actual)
 				},
 			},
 			want: true,
@@ -182,8 +182,8 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 					CreatedAt:   time.Now().Add(time.Hour),
 					InnerStruct: innerStruct{Value: "123"},
 				},
-				diffFn: func(actual, expected interface{}) bool {
-					return reflect.DeepEqual(actual, expected)
+				diffFn: func(expected, actual interface{}) bool {
+					return reflect.DeepEqual(expected, actual)
 				},
 			},
 			want: false,
@@ -193,8 +193,8 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 			args: args{
 				actual:   "hello world",
 				expected: "hello world",
-				diffFn: func(actual, expected interface{}) bool {
-					return reflect.DeepEqual(actual, expected)
+				diffFn: func(expected, actual interface{}) bool {
+					return reflect.DeepEqual(expected, actual)
 				},
 			},
 			want: true,
@@ -204,8 +204,8 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 			args: args{
 				actual:   "hello world",
 				expected: "hello world - 123",
-				diffFn: func(actual, expected interface{}) bool {
-					return reflect.DeepEqual(actual, expected)
+				diffFn: func(expected, actual interface{}) bool {
+					return reflect.DeepEqual(expected, actual)
 				},
 			},
 			want: false,
@@ -221,8 +221,8 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 					s := "hello world"
 					return &s
 				}(),
-				diffFn: func(actual, expected interface{}) bool {
-					return reflect.DeepEqual(actual, expected)
+				diffFn: func(expected, actual interface{}) bool {
+					return reflect.DeepEqual(expected, actual)
 				},
 			},
 			want: true,
@@ -238,8 +238,8 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 					s := "hello world - 123"
 					return &s
 				}(),
-				diffFn: func(actual, expected interface{}) bool {
-					return reflect.DeepEqual(actual, expected)
+				diffFn: func(expected, actual interface{}) bool {
+					return reflect.DeepEqual(expected, actual)
 				},
 			},
 			want: false,
@@ -247,7 +247,7 @@ func TestEqualsWithDiffFunc(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := EqualsWithDiffFunc(tt.args.actual, tt.args.expected, tt.args.skippedFields, tt.args.diffFn); got != tt.want {
+			if got := EqualsWithDiffFunc(tt.args.expected, tt.args.actual, tt.args.skippedFields, tt.args.diffFn); got != tt.want {
 				t.Errorf("EqualsWithDiffFunc() = %v, want %v", got, tt.want)
 			}
 		})
